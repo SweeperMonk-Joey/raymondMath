@@ -1,0 +1,2086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>🌟 Math Challenge – 10 Days to Champion!</title>
+    <style>
+        /* ===== GLOBAL RESET & BASE ===== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: fixed;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(145deg, #fff9f0 0%, #fde9d0 100%);
+            touch-action: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* ===== FORCE LANDSCAPE OVERLAY ===== */
+        #rotate-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #1a2a3a;
+            color: white;
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            font-size: 28px;
+            text-align: center;
+            padding: 40px;
+            font-family: inherit;
+        }
+        #rotate-overlay .icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: rotatePhone 2s ease-in-out infinite;
+        }
+        @keyframes rotatePhone {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(90deg); }
+        }
+        @media (orientation: portrait) {
+            #rotate-overlay { display: flex !important; }
+        }
+        @media (orientation: landscape) {
+            #rotate-overlay { display: none !important; }
+        }
+
+        .app-container {
+            max-width: 900px;
+            width: 100%;
+            height: 100vh;
+            height: 100dvh;
+            background: rgba(255, 252, 245, 0.94);
+            backdrop-filter: blur(4px);
+            padding: 10px 14px 16px;
+            border: 2px solid #ffe2c1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            margin: 0 auto;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        /* ===== TOP NAV ===== */
+        .top-nav {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex-wrap: nowrap;
+            margin-bottom: 8px;
+            background: #fff2e0;
+            padding: 5px 8px 5px 12px;
+            border-radius: 60px;
+            border: 2px solid #fad6b3;
+            flex-shrink: 0;
+            min-height: 48px;
+        }
+
+        .day-nav-arrows {
+            display: flex;
+            gap: 3px;
+        }
+        .day-nav-arrows button {
+            background: #f7dcc6;
+            border: none;
+            border-radius: 40px;
+            font-size: 20px;
+            width: 40px;
+            height: 40px;
+            font-weight: bold;
+            color: #6b3f1f;
+            cursor: pointer;
+            box-shadow: 0 3px 0 #cfb094;
+            touch-action: manipulation;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-family: inherit;
+        }
+        .day-nav-arrows button:active {
+            transform: translateY(3px);
+            box-shadow: none;
+        }
+
+        .day-dropdown {
+            flex: 1;
+            min-width: 90px;
+        }
+        .day-dropdown select {
+            width: 100%;
+            padding: 6px 10px;
+            border-radius: 60px;
+            border: 2px solid #dbb594;
+            background: #fffcf5;
+            font-size: 15px;
+            font-weight: 700;
+            color: #3d2817;
+            cursor: pointer;
+            font-family: inherit;
+            outline: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23a5724a' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            background-size: 16px;
+            min-height: 36px;
+            font-size: 14px;
+        }
+
+        .day-status-badge {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 40px;
+            background: #f7e3d3;
+            white-space: nowrap;
+            flex-shrink: 0;
+            min-height: 34px;
+        }
+        .day-status-badge .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            border: 2px solid #b28662;
+            flex-shrink: 0;
+        }
+        .dot-red { background: #f25c5c; }
+        .dot-orange { background: #f5a623; }
+        .dot-green { background: #4caf84; }
+
+        /* ===== STATS BAR ===== */
+        .stats-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 4px 8px;
+            background: #f7ede4;
+            padding: 5px 12px;
+            border-radius: 60px;
+            margin-bottom: 8px;
+            border: 2px solid #ecdacb;
+            font-size: 13px;
+            font-weight: 600;
+            color: #3f2c1b;
+            flex-shrink: 0;
+            min-height: 38px;
+        }
+        .stats-bar .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            font-size: 13px;
+        }
+        .stats-bar .stat-item .num {
+            background: white;
+            padding: 0 8px;
+            border-radius: 30px;
+            font-size: 13px;
+            min-width: 20px;
+            text-align: center;
+            border: 1px solid #dac2ae;
+            min-height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .stats-bar .stat-item.timer {
+            background: #2d4a6b;
+            color: white;
+            padding: 2px 10px 2px 8px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 700;
+            border: none;
+        }
+        .stats-bar .stat-item.timer .num {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            min-width: 44px;
+            font-size: 14px;
+        }
+        .stats-bar .stat-item.timer-pause {
+            background: #6b5a4a;
+            color: white;
+            border: none;
+            padding: 2px 8px;
+            border-radius: 40px;
+            font-size: 13px;
+            cursor: pointer;
+            touch-action: manipulation;
+            min-height: 26px;
+            display: flex;
+            align-items: center;
+            font-family: inherit;
+        }
+        .stats-bar .stat-item.timer-pause:active {
+            transform: scale(0.92);
+        }
+
+        /* ===== DAILY GOAL ===== */
+        .daily-goal {
+            background: #fff0d6;
+            border: 2px solid #f7b731;
+            border-radius: 40px;
+            padding: 3px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #6b4a1a;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+            margin-bottom: 6px;
+            min-height: 30px;
+            justify-content: center;
+        }
+        .daily-goal .goal-progress {
+            background: white;
+            border-radius: 40px;
+            padding: 0 10px;
+            font-size: 13px;
+            border: 1px solid #eaceb8;
+        }
+
+        /* ===== QUESTION CARD ===== */
+        .question-card {
+            background: #fffffffa;
+            border-radius: 32px;
+            padding: 14px 14px 16px;
+            box-shadow: 0 5px 0 #dbb594, 0 8px 20px rgba(150, 80, 30, 0.10);
+            border: 2px solid #eaceb8;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            min-height: 0;
+        }
+
+        .q-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #5d3d26;
+            flex-wrap: wrap;
+            gap: 3px;
+            flex-shrink: 0;
+        }
+        .q-header .q-num {
+            background: #f7dcc6;
+            padding: 2px 12px;
+            border-radius: 40px;
+            font-size: 14px;
+            min-height: 28px;
+            display: flex;
+            align-items: center;
+        }
+        .q-header .q-tag {
+            background: #d3e3f0;
+            padding: 2px 10px;
+            border-radius: 40px;
+            font-size: 12px;
+            min-height: 26px;
+            display: flex;
+            align-items: center;
+        }
+        .q-header .q-tag.review-tag { background: #f7d44a; color: #5f4600; }
+        .q-header .q-tag.logic-tag { background: #d4b8f0; color: #4a2a6b; }
+        .q-header .q-tag.word-tag { background: #b8d9f0; color: #1a4a6b; }
+
+        .q-text {
+            font-size: 22px;
+            font-weight: 700;
+            color: #281f18;
+            text-align: center;
+            padding: 10px 8px 12px;
+            background: #fcf6ef;
+            border-radius: 20px;
+            margin-bottom: 10px;
+            border: 2px dashed #e5cdb9;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            word-break: break-word;
+            line-height: 1.4;
+            flex-shrink: 0;
+        }
+        .q-text.word-text {
+            font-size: 18px;
+            text-align: left;
+            padding: 12px 10px;
+            line-height: 1.5;
+        }
+
+        /* ===== CHOICE BUTTONS ===== */
+        .choices {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 8px;
+            flex-shrink: 0;
+        }
+        .choice-btn {
+            background: #f5eee8;
+            border: 3px solid #dcc2ae;
+            border-radius: 50px;
+            padding: 12px 14px;
+            font-size: 20px;
+            font-weight: 700;
+            color: #1f150e;
+            cursor: pointer;
+            text-align: center;
+            box-shadow: 0 4px 0 #b3927a;
+            font-family: inherit;
+            touch-action: manipulation;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+            -webkit-user-select: none;
+            transition: 0.08s;
+        }
+        .choice-btn:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+        .choice-btn.correct-glow {
+            background: #a8e6cf;
+            border-color: #2d9c6e;
+            box-shadow: 0 0 0 4px #a8e6cf88;
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #2d9c6e;
+        }
+        .choice-btn.wrong-glow {
+            background: #f8c9c9;
+            border-color: #c73b3b;
+            box-shadow: 0 0 0 4px #f8c9c988;
+        }
+        .choice-btn:disabled {
+            opacity: 0.6;
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #b3927a;
+            cursor: not-allowed;
+        }
+
+        /* ===== INPUT AREA ===== */
+        .fill-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin: 2px 0 8px;
+            flex-shrink: 0;
+        }
+        .fill-area input {
+            width: 140px;
+            padding: 12px 8px;
+            font-size: 26px;
+            font-weight: 700;
+            text-align: center;
+            border: 4px solid #dbb594;
+            border-radius: 50px;
+            background: #fffcf5;
+            outline: none;
+            font-family: inherit;
+            min-height: 54px;
+            touch-action: manipulation;
+        }
+        .fill-area input:focus {
+            border-color: #b88258;
+            box-shadow: 0 0 0 5px #f7e3d3;
+        }
+        .fill-area .action-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .btn-primary {
+            background: #f9dcc6;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 24px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #3d2817;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #c9ab92;
+            font-family: inherit;
+            border: 2px solid #eaceb8;
+            touch-action: manipulation;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 90px;
+            transition: 0.08s;
+        }
+        .btn-primary:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+        .btn-secondary {
+            background: #d3e3f0;
+            box-shadow: 0 4px 0 #a7bcca;
+            border: 2px solid #bacee0;
+        }
+        .btn-primary:disabled {
+            opacity: 0.5;
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #c9ab92;
+            cursor: not-allowed;
+        }
+
+        /* ===== FEEDBACK ===== */
+        .feedback {
+            min-height: 54px;
+            padding: 8px 10px;
+            margin-top: 4px;
+            border-radius: 28px;
+            background: #f8f0e9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 600;
+            gap: 3px;
+            border: 2px solid #ecdacb;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        .feedback .sub-feedback {
+            font-size: 15px;
+            font-weight: 400;
+            color: #4f3929;
+        }
+        .feedback .error-count {
+            font-size: 16px;
+            background: #f3d7d7;
+            padding: 2px 14px;
+            border-radius: 40px;
+            color: #9a3a3a;
+        }
+
+        /* ===== BOTTOM ACTIONS ===== */
+        .bottom-actions {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 6px;
+            flex-shrink: 0;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 3px solid #dbb594;
+            border-radius: 50px;
+            padding: 6px 14px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #4f3929;
+            cursor: pointer;
+            font-family: inherit;
+            touch-action: manipulation;
+            min-height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.08s;
+        }
+        .btn-outline:active {
+            transform: scale(0.94);
+        }
+
+        /* ===== MODALS ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.45);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-box {
+            background: #fffaf2;
+            max-width: 620px;
+            width: 100%;
+            border-radius: 44px;
+            padding: 20px 20px 24px;
+            border: 4px solid #f7dcc6;
+            box-shadow: 0 24px 64px rgba(0,0,0,0.30);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .modal-box h2 {
+            font-size: 24px;
+            color: #3d2817;
+            margin-bottom: 10px;
+        }
+        .modal-box .review-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 4px;
+            border-bottom: 1px dashed #ecdacb;
+            font-size: 15px;
+            font-weight: 500;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .modal-box .review-item .badge {
+            background: #f7d44a;
+            padding: 2px 12px;
+            border-radius: 40px;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+        .modal-box .close-btn {
+            margin-top: 14px;
+            background: #f7dcc6;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 26px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            box-shadow: 0 4px 0 #c9ab92;
+            transition: 0.08s;
+            touch-action: manipulation;
+            min-height: 46px;
+            width: 100%;
+        }
+        .modal-box .close-btn:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+        .modal-box .stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 12px;
+            font-size: 15px;
+            padding: 4px 0;
+        }
+        .modal-box .stat-grid .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 3px 0;
+            border-bottom: 1px solid #f0e5d8;
+        }
+        .modal-box .stat-grid .stat-row .label { font-weight: 400; color: #5d4a3a; }
+        .modal-box .stat-grid .stat-row .value { font-weight: 700; color: #1f150e; }
+
+        /* ===== COMPLETION POPUP ===== */
+        .complete-popup {
+            background: #e1f5e8;
+            border: 4px solid #4caf84;
+            border-radius: 40px;
+            padding: 18px 14px;
+            text-align: center;
+            width: 100%;
+        }
+        .complete-popup h2 { font-size: 26px; color: #1d6b4a; }
+        .complete-popup .big-stats {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            font-size: 17px;
+            font-weight: 600;
+            margin: 8px 0;
+            flex-wrap: wrap;
+        }
+
+        /* ===== CELEBRATION ===== */
+        .celebration {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+            overflow: hidden;
+        }
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+            animation: confettiFall linear forwards;
+        }
+        @keyframes confettiFall {
+            0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+        }
+        .firework {
+            position: absolute;
+            border-radius: 50%;
+            animation: fireworkBurst ease-out forwards;
+        }
+        @keyframes fireworkBurst {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(4); opacity: 0; }
+        }
+
+        /* ===== HIDDEN CLEAR ===== */
+        .hidden-clear {
+            position: fixed;
+            bottom: 4px;
+            right: 4px;
+            width: 28px;
+            height: 28px;
+            background: transparent;
+            border: none;
+            font-size: 9px;
+            color: rgba(0,0,0,0.06);
+            cursor: pointer;
+            z-index: 50;
+            touch-action: manipulation;
+            font-family: inherit;
+        }
+        .hidden-clear:active {
+            color: rgba(200,50,50,0.25);
+        }
+
+        /* ===== FULLSCREEN HINT ===== */
+        .fullscreen-hint {
+            position: fixed;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-size: 16px;
+            z-index: 100;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s;
+            font-family: inherit;
+            text-align: center;
+        }
+        .fullscreen-hint.show {
+            opacity: 1;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            .app-container { padding: 6px 8px 10px; }
+            .q-text { font-size: 18px; min-height: 48px; padding: 8px 6px; }
+            .q-text.word-text { font-size: 16px; }
+            .choice-btn { font-size: 17px; padding: 10px 10px; min-height: 44px; }
+            .fill-area input { width: 120px; font-size: 22px; min-height: 46px; }
+            .stats-bar { font-size: 11px; gap: 3px 6px; padding: 4px 8px; min-height: 32px; }
+            .stats-bar .stat-item { font-size: 11px; }
+            .stats-bar .stat-item .num { font-size: 11px; min-height: 20px; padding: 0 5px; }
+            .stats-bar .stat-item.timer { font-size: 12px; padding: 2px 6px; }
+            .stats-bar .stat-item.timer .num { font-size: 12px; min-width: 36px; }
+            .top-nav { padding: 3px 6px; min-height: 38px; }
+            .day-nav-arrows button { width: 34px; height: 34px; font-size: 16px; }
+            .day-dropdown select { font-size: 12px; padding: 4px 8px; min-height: 30px; background-size: 14px; }
+            .day-status-badge { font-size: 11px; padding: 2px 8px; min-height: 28px; }
+            .btn-primary { padding: 8px 18px; font-size: 16px; min-height: 42px; min-width: 70px; }
+            .btn-outline { font-size: 12px; padding: 5px 12px; min-height: 34px; }
+            .feedback { font-size: 18px; min-height: 44px; padding: 6px 8px; }
+            .modal-box { padding: 14px; }
+            .daily-goal { font-size: 11px; padding: 2px 10px; min-height: 24px; }
+            .q-header { font-size: 12px; }
+            .q-header .q-num { font-size: 12px; min-height: 24px; padding: 2px 8px; }
+            .q-header .q-tag { font-size: 10px; min-height: 22px; padding: 2px 8px; }
+            .stats-bar .stat-item.timer-pause { font-size: 11px; padding: 2px 6px; min-height: 22px; }
+            .fullscreen-hint { font-size: 13px; padding: 8px 16px; bottom: 40px; }
+        }
+
+        @media (max-width: 400px) {
+            .q-text { font-size: 16px; min-height: 40px; }
+            .choice-btn { font-size: 15px; padding: 8px 8px; min-height: 38px; }
+            .fill-area input { width: 90px; font-size: 18px; min-height: 40px; }
+            .stats-bar .stat-item { font-size: 10px; }
+            .stats-bar .stat-item .num { font-size: 10px; min-height: 18px; padding: 0 4px; }
+        }
+
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #f7ede4; border-radius: 20px; }
+        ::-webkit-scrollbar-thumb { background: #dbb594; border-radius: 20px; }
+    </style>
+</head>
+<body>
+
+<!-- ===== ROTATE OVERLAY ===== -->
+<div id="rotate-overlay">
+    <div class="icon">📱</div>
+    <div>Please rotate your iPad to <strong>Landscape</strong> mode</div>
+    <div style="font-size:18px; margin-top:12px; opacity:0.7;">↻ Turn your device sideways</div>
+</div>
+
+<!-- ===== CELEBRATION ===== -->
+<div class="celebration" id="celebrationContainer" style="display:none;"></div>
+
+<!-- ===== FULLSCREEN HINT ===== -->
+<div class="fullscreen-hint" id="fullscreenHint">👆 Tap anywhere to go fullscreen</div>
+
+<!-- ===== MAIN APP ===== -->
+<div class="app-container" id="app">
+
+    <!-- TOP NAV -->
+    <div class="top-nav">
+        <div class="day-nav-arrows">
+            <button id="prevDayBtn" aria-label="Previous Day">◀</button>
+            <button id="nextDayBtn" aria-label="Next Day">▶</button>
+        </div>
+        <div class="day-dropdown">
+            <select id="daySelect" aria-label="Select Day"></select>
+        </div>
+        <div class="day-status-badge" id="dayStatusBadge">
+            <span class="dot" id="statusDot"></span>
+            <span id="statusLabel">Not started</span>
+        </div>
+    </div>
+
+    <!-- STATS BAR -->
+    <div class="stats-bar" id="statsBar">
+        <span class="stat-item">📌 <span id="progressText">Day 1 · 1/50</span></span>
+        <span class="stat-item">⭐ <span class="num" id="starCount">0</span></span>
+        <span class="stat-item">❌ <span class="num" id="errorCount">0</span></span>
+        <span class="stat-item">📋 <span class="num" id="reviewCount">0</span></span>
+        <span class="stat-item">📊 <span class="num" id="overallProgress">0%</span></span>
+        <span class="stat-item timer">⏱️ <span class="num" id="timerDisplay">00:00</span></span>
+        <span class="stat-item timer-pause" id="timerPauseBtn">⏸️</span>
+    </div>
+
+    <!-- DAILY GOAL -->
+    <div class="daily-goal" id="dailyGoal">
+        🎯 Today's Goal: <span id="goalText">40 ⭐</span>
+        <span class="goal-progress" id="goalProgress">0 / 40</span>
+    </div>
+
+    <!-- QUESTION CARD -->
+    <div class="question-card" id="questionCard">
+        <div class="q-header">
+            <span class="q-num" id="qNum">Q1</span>
+            <span class="q-tag" id="qTag">Multiple Choice</span>
+        </div>
+        <div class="q-text" id="qText">7 × 8 = ?</div>
+        <div class="choices" id="choicesContainer"></div>
+        <div class="fill-area" id="fillArea" style="display:none;">
+            <input type="number" id="fillInput" placeholder="?" autofocus inputmode="numeric" />
+            <div class="action-row">
+                <button class="btn-primary" id="checkFillBtn">✅ Check</button>
+                <button class="btn-primary btn-secondary" id="markReviewBtn">🤔 Mark for review</button>
+            </div>
+        </div>
+        <div class="feedback" id="feedback">
+            <span>✨ Ready?</span>
+            <span class="sub-feedback">Choose an answer or type it in!</span>
+        </div>
+        <div class="bottom-actions">
+            <button class="btn-outline" id="showReviewListBtn">📋 Review List</button>
+            <button class="btn-outline" id="showParentPanelBtn">👨‍👩‍👦 Parent Panel</button>
+            <button class="btn-primary" id="nextQuestionBtn" style="display:none;">➡️ Next</button>
+        </div>
+    </div>
+
+    <!-- HIDDEN CLEAR -->
+    <button class="hidden-clear" id="clearCacheBtn" title="Clear Cache (hidden)">⚙️</button>
+</div>
+
+<!-- ===== MODALS ===== -->
+<div class="modal-overlay" id="reviewModal">
+    <div class="modal-box">
+        <h2>📋 Review List</h2>
+        <div id="reviewListContent"><p style="color:#6f5542;">No items marked for review.</p></div>
+        <button class="close-btn" id="closeReviewModal">Close</button>
+    </div>
+</div>
+
+<div class="modal-overlay" id="parentModal">
+    <div class="modal-box">
+        <h2>👨‍👩‍👦 Parent Panel</h2>
+        <div id="parentPanelContent"></div>
+        <button class="close-btn" id="closeParentModal">Close</button>
+    </div>
+</div>
+
+<div class="modal-overlay" id="lockedModal">
+    <div class="modal-box">
+        <h2>🔒 Day Locked</h2>
+        <p style="font-size:20px; margin:10px 0;">Please finish <strong id="lockedPrevDay">Day X</strong> first!</p>
+        <button class="close-btn" id="closeLockedModal">Got it!</button>
+    </div>
+</div>
+
+<script>
+// ============================================================
+//   DATA GENERATION
+// ============================================================
+
+const DAYS = 10;
+const TOTAL_PER_DAY = 50;
+const MC_COUNT = 10;
+const FILL_COUNT = 25;
+const WORD_COUNT = 10;
+const LOGIC_COUNT = 5;
+const DAILY_GOAL = 40;
+
+function shuffleArray(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+}
+
+function generateDistractors(correct, count = 2) {
+    const result = [];
+    let attempts = 0;
+    while (result.length < count && attempts < 200) {
+        attempts++;
+        let d;
+        const r = Math.random();
+        if (r < 0.35) d = correct + (Math.random() < 0.5 ? 1 : -1);
+        else if (r < 0.65) d = correct + (Math.random() < 0.5 ? 2 : -2);
+        else d = correct + (Math.floor(Math.random() * 12) - 6);
+        if (d !== correct && d >= 0 && d <= 120 && !result.includes(d) && !result.includes(correct)) {
+            result.push(d);
+        }
+    }
+    while (result.length < count) {
+        let fallback = correct + result.length + 2;
+        if (fallback === correct) fallback += 3;
+        if (fallback >= 0 && !result.includes(fallback)) result.push(fallback);
+    }
+    return result;
+}
+
+// ============================================================
+//   WORD PROBLEMS
+// ============================================================
+const WORD_DATA = [
+    [
+        { text: "Tom has 5 bags. Each bag has 9 apples. How many apples in total?", answer: 45 },
+        { text: "There were 32 students. 8 left. How many are left?", answer: 24 },
+        { text: "A rope is 18m. Cut into 3 equal pieces. How long each?", answer: 6 },
+        { text: "Lily reads 7 pages/day for 6 days. How many pages?", answer: 42 },
+        { text: "Parking lot: 9 rows, 8 cars each. Total cars?", answer: 72 },
+        { text: "Amy has $40. Spends $5 on pencils. How much left?", answer: 35 },
+        { text: "One flower needs 4 blocks. How many for 8 flowers?", answer: 32 },
+        { text: "27 children form groups of 9. How many groups?", answer: 3 },
+        { text: "Anna has 6 books. Ben has 7 times more. How many does Ben have?", answer: 42 },
+        { text: "6 birds flew away. 24 remained. How many at first?", answer: 30 }
+    ],
+    [
+        { text: "Store: 7 shelves, 6 bottles each. Total bottles?", answer: 42 },
+        { text: "Mom bought 3 dozen eggs (12 each). How many eggs?", answer: 36 },
+        { text: "45 blocks shared by 9 children. Each gets how many?", answer: 5 },
+        { text: "A pen costs $8. How much for 7 pens?", answer: 56 },
+        { text: "Lily is 8. Mom is 5 times older. How old is Mom?", answer: 40 },
+        { text: "Bus: 56 people, 20 get off, 15 get on. How many now?", answer: 51 },
+        { text: "A square has 4 sides. How many sides on 7 squares?", answer: 28 },
+        { text: "6 rows of apple trees, 9 trees each. Total trees?", answer: 54 },
+        { text: "Jack did 32 questions, got 4 wrong. How many right?", answer: 28 },
+        { text: "48 peaches on 6 plates equally. How many per plate?", answer: 8 }
+    ],
+    [
+        { text: "Art class: 8 children per group, 7 groups. Total?", answer: 56 },
+        { text: "Book has 63 pages. Read 9 pages/day. Days to finish?", answer: 7 },
+        { text: "Leo had 11 balloons. Gave 4 away, bought 6 more. Now?", answer: 13 },
+        { text: "Exercise rows: 8 children per row, 9 rows. Total?", answer: 72 },
+        { text: "A frog has 4 legs. How many legs on 7 frogs?", answer: 28 },
+        { text: "Teacher had 50 notebooks, gave away 38. Left?", answer: 12 },
+        { text: "Milk box: 6 rows, 4 cartons each. Total cartons?", answer: 24 },
+        { text: "Amy has 18 candies, shares with 9 friends. Each?", answer: 2 },
+        { text: "Dad is 36, son is 9. Dad is how many times older?", answer: 4 },
+        { text: "Farm: 25 roosters, 38 hens, 17 chicks. Total?", answer: 80 }
+    ],
+    [
+        { text: "Rabbit pulls 7 piles, 8 carrots each. Total carrots?", answer: 56 },
+        { text: "42 students in 6 equal groups. How many per group?", answer: 7 },
+        { text: "Shop sold 27 bottles morning, 36 afternoon. Total?", answer: 63 },
+        { text: "A hexagon has 6 sides. Sides on 9 hexagons?", answer: 54 },
+        { text: "Mom has $50. Spends $18 on fish, $22 on meat. Left?", answer: 10 },
+        { text: "36 balloons in bunches of 9. How many bunches?", answer: 4 },
+        { text: "Mike writes 5 characters/day. How many in 7 days?", answer: 35 },
+        { text: "8 big trees, small trees 6 times more. Small trees?", answer: 48 },
+        { text: "9 cars drove away. 48 left. How many at first?", answer: 57 },
+        { text: "54m ribbon cut into 6 equal pieces. Each length?", answer: 9 }
+    ],
+    [
+        { text: "Movie ticket $8. Tim + 4 friends go. Total cost?", answer: 40 },
+        { text: "8 geese, ducks 7 times more. How many ducks?", answer: 56 },
+        { text: "56 stamps, 8 per page. How many pages?", answer: 7 },
+        { text: "35m log, 5 min per cut. Time for 7 pieces? (6 cuts)", answer: 30 },
+        { text: "44 storybooks, 15 fewer science books. Science?", answer: 29 },
+        { text: "6 mooncakes per box. How many in 8 boxes?", answer: 48 },
+        { text: "Square: 4 front, 4 behind, 3 left, 3 right. Total? (9×9)", answer: 81 },
+        { text: "Sam found 9 shells. Ben found 8 times more. Total?", answer: 81 },
+        { text: "40 apples, 16 eaten. Rest shared by 8 people. Each?", answer: 3 },
+        { text: "Mia makes 1 flower in 8 min. 9:00 to 9:56 (56 min). How many?", answer: 7 }
+    ],
+    [
+        { text: "Pencil costs $2. Buy 9, pay $20. Change?", answer: 2 },
+        { text: "Choir: 18 boys, 27 girls. Girls are how many times boys? (27÷18)", answer: 1.5 },
+        { text: "Read 8 pages/day for 7 days, 6 pages left. Total?", answer: 62 },
+        { text: "56 candies shared by 7 children. Each? If 8 children?", answer: 8 },
+        { text: "Flowers: 25 red, 18 yellow, 12 white. Total?", answer: 55 },
+        { text: "Triangle has 3 corners. Corners on 8 triangles?", answer: 24 },
+        { text: "Apples $6/kg. Buy 8kg, pay $50. Change?", answer: 2 },
+        { text: "72 children, 9 per boat. How many boats?", answer: 8 },
+        { text: "7 black rabbits, white 5 times more. How many more white?", answer: 28 },
+        { text: "24 apples shared by 6 children. Each? If 3 each, how many children?", answer: 4 }
+    ],
+    [
+        { text: "Rope folded twice (4 parts). Each 9m. Original length?", answer: 36 },
+        { text: "8 rows cars, 7 each, plus 9 buses. Total vehicles?", answer: 65 },
+        { text: "Four $5 bills = $20. Want $23. Short by?", answer: 3 },
+        { text: "Mia folded 27 cranes, Leo 9. How many times more? (27÷9)", answer: 3 },
+        { text: "40 buns, 8 per bag. How many full bags?", answer: 5 },
+        { text: "Crab has 8 legs. Legs on 9 crabs?", answer: 72 },
+        { text: "Road crew: 28m day1, 35m day2. Total?", answer: 63 },
+        { text: "42 apples shared by 6 children. Each? If 3 more children (9 total)?", answer: 7 },
+        { text: "Mistook 6 for 9, got 63. Correct product? (7×6)", answer: 42 },
+        { text: "36 yellow balloons, 9 red. Yellow is how many times red? (36÷9)", answer: 4 }
+    ],
+    [
+        { text: "Table seats 8. 5 tables seat how many? 42 people need how many tables?", answer: 40 },
+        { text: "48 milk boxes, 19 sold morning, 26 afternoon. Left?", answer: 3 },
+        { text: "Lily has 5 candies. Mia 8 times more. Total?", answer: 45 },
+        { text: "64m rope cut 8 times = 9 pieces. Each length? (64÷9)", answer: 7 },
+        { text: "3 classes, each 9 girls + 7 boys = 16. Total students? (3×16)", answer: 48 },
+        { text: "Monkey picks 5 peaches. Mom 6 times more. Total? (5+30)", answer: 35 },
+        { text: "Pen $6. Bag 8 times pen = $48. Bag + pen = ?", answer: 54 },
+        { text: "36 flowers, 9 per bunch = 4 bunches. If 6 per bunch = 6 bunches.", answer: 6 },
+        { text: "Walk 7 min. Walked 4 min. Left 3 min. 4 trips = 28 min.", answer: 28 },
+        { text: "Teacher Wang has $50. Buys 8 notebooks × $6 = $48. Left $2.", answer: 2 }
+    ],
+    [
+        { text: "Seven $5 bills = $35. Backpack $42. Not enough. Short by $7.", answer: 7 },
+        { text: "28 boys + 20 girls = 48. 8 per boat. 6 boats needed.", answer: 6 },
+        { text: "Mia has 3 stamps. Lily 27. Lily gives Mia 18. Mia=21, Lily=9.", answer: 9 },
+        { text: "Log into 4 pieces = 3 cuts. 12 min ÷ 3 = 4 min/cut. 8 pieces = 7 cuts × 4 = 28 min.", answer: 28 },
+        { text: "Square: 4th from each side. 7×7 = 49 children.", answer: 49 },
+        { text: "White rabbit 6 cabbages. Gray = 4×6+3 = 27 cabbages.", answer: 27 },
+        { text: "7 apples. Pears = 5×7 = 35. Total = 42 fruits.", answer: 42 },
+        { text: "49 children, 8 per van. 6 vans = 48, last van has 1 child.", answer: 1 },
+        { text: "Mistook 9 for 6, got 42. Actual multiplier = 7. Correct = 7×9 = 63.", answer: 63 },
+        { text: "Lily 7, Dad 5×7 = 35. Difference = 28. Stays 28 in 10 years.", answer: 28 }
+    ],
+    [
+        { text: "Read 9 pages/day × 8 days = 72. 18 left. Total = 90 pages.", answer: 90 },
+        { text: "32 + 19 + 27 = 78 roses. Sell 44. Left = 34.", answer: 34 },
+        { text: "5 children × (7+4) = 5 × 11 = 55 flowers.", answer: 55 },
+        { text: "72m rope ÷ 8 parts = 9m each.", answer: 9 },
+        { text: "Six $1 = $6. Four $5 = $20. Total $26. Basketball $48. Need $22 more.", answer: 22 },
+        { text: "Lily 9 kicks. Mia = 9×6 = 54. More = 54-9 = 45.", answer: 45 },
+        { text: "38 apples. 9×4 = 36, so remove 2. Each gets 4.", answer: 2 },
+        { text: "4th front + 5th back = 8 people per column. 3rd left + 6th right = 8 per row. 8×8 = 64.", answer: 64 },
+        { text: "Used 6, got 7 r5. Number = 6×7+5 = 47. 47÷9 = 5 r2.", answer: 2 },
+        { text: "3 pieces = 2 cuts. 8 min ÷ 2 = 4 min/cut. 6 pieces = 5 cuts × 4 = 20 min.", answer: 20 }
+    ]
+];
+
+// ============================================================
+//   LOGIC PUZZLES
+// ============================================================
+const LOGIC_DATA = [];
+for (let d = 0; d < DAYS; d++) {
+    LOGIC_DATA.push([
+        { display: "What comes next? 2, 4, 6, 8, ___", options: [10, 12, 9], answer: 10 },
+        { display: "5 apples (200g) vs 4 oranges (250g). Which? (1=apples, 2=oranges, 3=same)", options: [1, 2, 3], answer: 3 },
+        { display: "Sam > Ben > Leo. Who is shortest? (1=Sam, 2=Ben, 3=Leo)", options: [1, 2, 3], answer: 3 },
+        { display: "Number between 20-30, multiple of 7. What is it?", options: [21, 28, 24], answer: 28 },
+        { display: "Chickens (2 legs) + cows (4 legs). 10 heads, 28 legs. How many chickens?", options: [6, 4, 8], answer: 6 }
+    ]);
+}
+
+// ============================================================
+//   BUILD A DAY
+// ============================================================
+function makeDay(dayIndex) {
+    const qs = [];
+    const isDivision = (dayIndex >= 8);
+    const multipliers = [5,6,7,8,9];
+
+    for (let i = 0; i < MC_COUNT; i++) {
+        let a, b, op, answer, display;
+        if (isDivision && Math.random() < 0.3) {
+            const c = multipliers[Math.floor(Math.random() * multipliers.length)];
+            b = multipliers[Math.floor(Math.random() * multipliers.length)];
+            a = c * b;
+            op = '÷';
+            answer = c;
+            display = `${a} ${op} ${b} = ?`;
+        } else {
+            a = multipliers[Math.floor(Math.random() * multipliers.length)];
+            b = multipliers[Math.floor(Math.random() * multipliers.length)];
+            op = '×';
+            answer = a * b;
+            display = `${a} ${op} ${b} = ?`;
+        }
+        if (answer > 81) { a=7; b=8; answer=56; display='7 × 8 = ?'; }
+        const opts = [answer, ...generateDistractors(answer, 2)];
+        shuffleArray(opts);
+        qs.push({
+            id: `d${dayIndex+1}-mc${i+1}`,
+            type: 'mc',
+            display: display,
+            answer: answer,
+            options: opts,
+            day: dayIndex + 1,
+            index: i,
+        });
+    }
+
+    for (let i = 0; i < FILL_COUNT; i++) {
+        let a, b, op, answer, display;
+        if (isDivision && Math.random() < 0.3) {
+            const c = multipliers[Math.floor(Math.random() * multipliers.length)];
+            b = multipliers[Math.floor(Math.random() * multipliers.length)];
+            a = c * b;
+            op = '÷';
+            answer = c;
+            display = `${a} ${op} ${b} = ?`;
+        } else {
+            a = multipliers[Math.floor(Math.random() * multipliers.length)];
+            b = multipliers[Math.floor(Math.random() * multipliers.length)];
+            op = '×';
+            answer = a * b;
+            display = `${a} ${op} ${b} = ?`;
+        }
+        if (answer > 81) { a=7; b=8; answer=56; display='7 × 8 = ?'; }
+        qs.push({
+            id: `d${dayIndex+1}-fill${i+1}`,
+            type: 'fill',
+            display: display,
+            answer: answer,
+            day: dayIndex + 1,
+            index: MC_COUNT + i,
+        });
+    }
+
+    const wordData = WORD_DATA[dayIndex] || WORD_DATA[0];
+    for (let i = 0; i < WORD_COUNT; i++) {
+        const w = wordData[i % wordData.length];
+        qs.push({
+            id: `d${dayIndex+1}-word${i+1}`,
+            type: 'word',
+            display: w.text,
+            answer: w.answer,
+            day: dayIndex + 1,
+            index: MC_COUNT + FILL_COUNT + i,
+        });
+    }
+
+    const logicData = LOGIC_DATA[dayIndex] || LOGIC_DATA[0];
+    for (let i = 0; i < LOGIC_COUNT; i++) {
+        const p = logicData[i % logicData.length];
+        qs.push({
+            id: `d${dayIndex+1}-logic${i+1}`,
+            type: 'logic',
+            display: p.display,
+            answer: p.answer,
+            options: shuffleArray([...p.options]),
+            day: dayIndex + 1,
+            index: MC_COUNT + FILL_COUNT + WORD_COUNT + i,
+        });
+    }
+
+    return qs;
+}
+
+// ============================================================
+//   GENERATE ALL DAYS
+// ============================================================
+let allDays = [];
+for (let d = 0; d < DAYS; d++) {
+    allDays.push(makeDay(d));
+}
+
+// ============================================================
+//   STATE
+// ============================================================
+function getDefaultState() {
+    return {
+        currentDay: 0,
+        currentQuestion: 0,
+        timerStarted: false,
+        timerStartTime: null,
+        timerPaused: false,
+        timerPauseOffset: 0,
+        dayProgress: allDays.map((dayQs) => ({
+            completed: false,
+            stars: 0,
+            totalErrors: 0,
+            reviewCount: 0,
+            questionStates: dayQs.map(() => ({
+                answered: false,
+                correct: false,
+                errors: 0,
+                markedReview: false,
+                userAnswer: null,
+            }))
+        }))
+    };
+}
+
+let state = null;
+
+function loadState() {
+    try {
+        const raw = localStorage.getItem('mathChallengeState');
+        if (raw) {
+            state = JSON.parse(raw);
+            while (state.dayProgress.length < DAYS) {
+                state.dayProgress.push({
+                    completed: false, stars: 0, totalErrors: 0, reviewCount: 0,
+                    questionStates: allDays[state.dayProgress.length].map(() => ({
+                        answered: false, correct: false, errors: 0, markedReview: false, userAnswer: null
+                    }))
+                });
+            }
+            for (let d = 0; d < DAYS; d++) {
+                if (!state.dayProgress[d].questionStates || state.dayProgress[d].questionStates.length !== TOTAL_PER_DAY) {
+                    state.dayProgress[d].questionStates = allDays[d].map(() => ({
+                        answered: false, correct: false, errors: 0, markedReview: false, userAnswer: null
+                    }));
+                }
+            }
+            return;
+        }
+    } catch(e) {}
+    state = getDefaultState();
+}
+
+function saveState() {
+    localStorage.setItem('mathChallengeState', JSON.stringify(state));
+}
+
+loadState();
+
+// ============================================================
+//   AUDIO
+// ============================================================
+let audioCtx = null;
+
+function initAudio() {
+    if (!audioCtx) {
+        try {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        } catch(e) { /* silent */ }
+    }
+}
+
+function playSound(type) {
+    try {
+        initAudio();
+        const ctx = audioCtx;
+        if (!ctx) return;
+        if (ctx.state === 'suspended') {
+            ctx.resume();
+        }
+        if (type === 'correct') {
+            const notes = [523, 659, 784, 1047];
+            notes.forEach((freq, i) => {
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.frequency.value = freq;
+                osc.type = 'square';
+                gain.gain.setValueAtTime(0.12, ctx.currentTime + i * 0.08);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.08 + 0.14);
+                osc.start(ctx.currentTime + i * 0.08);
+                osc.stop(ctx.currentTime + i * 0.08 + 0.14);
+            });
+        } else if (type === 'wrong') {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.frequency.value = 220;
+            osc.type = 'sawtooth';
+            gain.gain.setValueAtTime(0.10, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+            osc.start(ctx.currentTime);
+            osc.stop(ctx.currentTime + 0.3);
+            const osc2 = ctx.createOscillator();
+            const gain2 = ctx.createGain();
+            osc2.connect(gain2);
+            gain2.connect(ctx.destination);
+            osc2.frequency.value = 160;
+            osc2.type = 'sine';
+            gain2.gain.setValueAtTime(0.06, ctx.currentTime + 0.05);
+            gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
+            osc2.start(ctx.currentTime + 0.05);
+            osc2.stop(ctx.currentTime + 0.35);
+        } else if (type === 'complete') {
+            const notes = [523, 659, 784, 1047, 784, 1047, 1175];
+            notes.forEach((freq, i) => {
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.frequency.value = freq;
+                osc.type = 'square';
+                gain.gain.setValueAtTime(0.10, ctx.currentTime + i * 0.1);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.1 + 0.18);
+                osc.start(ctx.currentTime + i * 0.1);
+                osc.stop(ctx.currentTime + i * 0.1 + 0.18);
+            });
+        } else if (type === 'celebration') {
+            for (let i = 0; i < 12; i++) {
+                const freq = 400 + Math.random() * 800;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.frequency.value = freq;
+                osc.type = 'sine';
+                gain.gain.setValueAtTime(0.06, ctx.currentTime + i * 0.07);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.07 + 0.14);
+                osc.start(ctx.currentTime + i * 0.07);
+                osc.stop(ctx.currentTime + i * 0.07 + 0.14);
+            }
+        }
+    } catch(e) { /* silent */ }
+}
+
+// ============================================================
+//   CELEBRATION
+// ============================================================
+function triggerCelebration() {
+    const container = document.getElementById('celebrationContainer');
+    container.style.display = 'block';
+    container.innerHTML = '';
+    const colors = ['#ff6b6b', '#feca57', '#48dbfb', '#ff9ff3', '#54a0ff', '#5f27cd', '#1dd1a1', '#f368e0'];
+    for (let i = 0; i < 100; i++) {
+        const el = document.createElement('div');
+        el.className = 'confetti';
+        el.style.left = Math.random() * 100 + '%';
+        el.style.top = '-10px';
+        el.style.background = colors[Math.floor(Math.random() * colors.length)];
+        el.style.width = (5 + Math.random() * 10) + 'px';
+        el.style.height = (5 + Math.random() * 10) + 'px';
+        el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+        el.style.animationDuration = (2 + Math.random() * 3) + 's';
+        el.style.animationDelay = (Math.random() * 2) + 's';
+        container.appendChild(el);
+    }
+    for (let i = 0; i < 16; i++) {
+        setTimeout(() => {
+            const el = document.createElement('div');
+            el.className = 'firework';
+            el.style.left = (10 + Math.random() * 80) + '%';
+            el.style.top = (10 + Math.random() * 60) + '%';
+            const size = 15 + Math.random() * 35;
+            el.style.width = size + 'px';
+            el.style.height = size + 'px';
+            el.style.background = colors[Math.floor(Math.random() * colors.length)];
+            el.style.boxShadow = '0 0 30px ' + colors[Math.floor(Math.random() * colors.length)];
+            el.style.animationDuration = (0.7 + Math.random() * 0.6) + 's';
+            container.appendChild(el);
+            setTimeout(() => el.remove(), 1400);
+        }, i * 80);
+    }
+    playSound('celebration');
+    setTimeout(() => {
+        container.style.display = 'none';
+        container.innerHTML = '';
+    }, 4500);
+}
+
+// ============================================================
+//   TIMER
+// ============================================================
+let timerInterval = null;
+
+function startTimer() {
+    if (state.timerStarted && !state.timerPaused) {
+        updateTimerDisplay();
+        return;
+    }
+    if (state.timerPaused) {
+        state.timerPaused = false;
+        state.timerStartTime = Date.now() - state.timerPauseOffset;
+        saveState();
+        updateTimerDisplay();
+        if (timerInterval) clearInterval(timerInterval);
+        timerInterval = setInterval(updateTimerDisplay, 1000);
+        document.getElementById('timerPauseBtn').textContent = '⏸️';
+        return;
+    }
+    state.timerStarted = true;
+    state.timerStartTime = Date.now();
+    state.timerPauseOffset = 0;
+    saveState();
+    updateTimerDisplay();
+    if (timerInterval) clearInterval(timerInterval);
+    timerInterval = setInterval(updateTimerDisplay, 1000);
+}
+
+function toggleTimerPause() {
+    if (!state.timerStarted) return;
+    if (state.timerPaused) {
+        state.timerPaused = false;
+        state.timerStartTime = Date.now() - state.timerPauseOffset;
+        saveState();
+        timerInterval = setInterval(updateTimerDisplay, 1000);
+        document.getElementById('timerPauseBtn').textContent = '⏸️';
+    } else {
+        state.timerPaused = true;
+        state.timerPauseOffset = Date.now() - state.timerStartTime;
+        if (timerInterval) clearInterval(timerInterval);
+        timerInterval = null;
+        saveState();
+        document.getElementById('timerPauseBtn').textContent = '▶️';
+    }
+}
+
+function updateTimerDisplay() {
+    const display = document.getElementById('timerDisplay');
+    if (!state.timerStarted) {
+        display.textContent = '00:00';
+        return;
+    }
+    if (state.timerPaused) {
+        const elapsed = Math.floor(state.timerPauseOffset / 1000);
+        const mins = String(Math.floor(elapsed / 60)).padStart(2, '0');
+        const secs = String(elapsed % 60).padStart(2, '0');
+        display.textContent = `${mins}:${secs}`;
+        return;
+    }
+    const elapsed = Math.floor((Date.now() - state.timerStartTime) / 1000);
+    const mins = String(Math.floor(elapsed / 60)).padStart(2, '0');
+    const secs = String(elapsed % 60).padStart(2, '0');
+    display.textContent = `${mins}:${secs}`;
+}
+
+function stopTimer() {
+    if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+    }
+}
+
+// ============================================================
+//   HELPERS
+// ============================================================
+function getDayQuestions(dayIdx) { return allDays[dayIdx]; }
+function getQuestionState(dayIdx, qIdx) { return state.dayProgress[dayIdx].questionStates[qIdx]; }
+function getQuestion(dayIdx, qIdx) { return allDays[dayIdx][qIdx]; }
+
+function getDayStatus(dayIdx) {
+    const prog = state.dayProgress[dayIdx];
+    if (!prog) return 'not-started';
+    const allAnswered = prog.questionStates.every(s => s.answered && s.correct);
+    if (allAnswered) return 'completed';
+    const anyAnswered = prog.questionStates.some(s => s.answered);
+    if (anyAnswered) return 'in-progress';
+    return 'not-started';
+}
+
+function isDayLocked(dayIdx) {
+    if (dayIdx === 0) return false;
+    return getDayStatus(dayIdx - 1) !== 'completed';
+}
+
+function getOverallProgress() {
+    let total = 0;
+    for (let d = 0; d < DAYS; d++) {
+        for (let q = 0; q < TOTAL_PER_DAY; q++) {
+            if (state.dayProgress[d].questionStates[q]?.answered) total++;
+        }
+    }
+    return Math.round((total / (DAYS * TOTAL_PER_DAY)) * 100);
+}
+
+function getTotalStars() {
+    let sum = 0;
+    for (let d = 0; d < DAYS; d++) sum += state.dayProgress[d].stars || 0;
+    return sum;
+}
+function getTotalErrors() {
+    let sum = 0;
+    for (let d = 0; d < DAYS; d++) sum += state.dayProgress[d].totalErrors || 0;
+    return sum;
+}
+function getTotalReviewCount() {
+    let sum = 0;
+    for (let d = 0; d < DAYS; d++) sum += state.dayProgress[d].reviewCount || 0;
+    return sum;
+}
+
+function getDayAccuracy(dayIdx) {
+    const prog = state.dayProgress[dayIdx];
+    if (!prog) return { correct: 0, total: 0, percent: 0 };
+    let correct = 0, total = 0;
+    for (let q = 0; q < TOTAL_PER_DAY; q++) {
+        const s = prog.questionStates[q];
+        if (s.answered) {
+            total++;
+            if (s.correct) correct++;
+        }
+    }
+    return { correct, total, percent: total > 0 ? Math.round((correct / total) * 100) : 0 };
+}
+
+function getDayGoalProgress(dayIdx) {
+    const prog = state.dayProgress[dayIdx];
+    if (!prog) return 0;
+    return Math.min(prog.stars, DAILY_GOAL);
+}
+
+function isAllDaysComplete() {
+    for (let d = 0; d < DAYS; d++) {
+        if (getDayStatus(d) !== 'completed') return false;
+    }
+    return true;
+}
+
+// ============================================================
+//   FULLSCREEN
+// ============================================================
+let fullscreenAttempted = false;
+
+function requestFullscreen() {
+    if (fullscreenAttempted) return;
+    fullscreenAttempted = true;
+    const el = document.documentElement;
+    if (el.requestFullscreen) {
+        el.requestFullscreen().catch(() => {});
+    } else if (el.webkitRequestFullscreen) {
+        el.webkitRequestFullscreen();
+    }
+    const hint = document.getElementById('fullscreenHint');
+    hint.classList.remove('show');
+}
+
+document.addEventListener('click', () => {
+    if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+        requestFullscreen();
+    }
+}, { once: false });
+
+// Show fullscreen hint after 2s
+setTimeout(() => {
+    if (!fullscreenAttempted) {
+        document.getElementById('fullscreenHint').classList.add('show');
+    }
+}, 1500);
+
+// Hide hint after 5s or on first click
+setTimeout(() => {
+    document.getElementById('fullscreenHint').classList.remove('show');
+}, 5000);
+
+// ============================================================
+//   UI RENDERING
+// ============================================================
+let currentDay = state.currentDay;
+let currentQ = state.currentQuestion;
+
+const qTextEl = document.getElementById('qText');
+const qNumEl = document.getElementById('qNum');
+const qTagEl = document.getElementById('qTag');
+const choicesContainer = document.getElementById('choicesContainer');
+const fillArea = document.getElementById('fillArea');
+const fillInput = document.getElementById('fillInput');
+const checkFillBtn = document.getElementById('checkFillBtn');
+const markReviewBtn = document.getElementById('markReviewBtn');
+const feedbackEl = document.getElementById('feedback');
+const nextBtn = document.getElementById('nextQuestionBtn');
+const daySelect = document.getElementById('daySelect');
+const statusDot = document.getElementById('statusDot');
+const statusLabel = document.getElementById('statusLabel');
+const progressText = document.getElementById('progressText');
+const starCount = document.getElementById('starCount');
+const errorCount = document.getElementById('errorCount');
+const reviewCount = document.getElementById('reviewCount');
+const overallProgress = document.getElementById('overallProgress');
+const prevDayBtn = document.getElementById('prevDayBtn');
+const nextDayBtn = document.getElementById('nextDayBtn');
+const showReviewListBtn = document.getElementById('showReviewListBtn');
+const showParentPanelBtn = document.getElementById('showParentPanelBtn');
+const reviewModal = document.getElementById('reviewModal');
+const reviewListContent = document.getElementById('reviewListContent');
+const closeReviewModal = document.getElementById('closeReviewModal');
+const parentModal = document.getElementById('parentModal');
+const parentPanelContent = document.getElementById('parentPanelContent');
+const closeParentModal = document.getElementById('closeParentModal');
+const lockedModal = document.getElementById('lockedModal');
+const lockedPrevDay = document.getElementById('lockedPrevDay');
+const closeLockedModal = document.getElementById('closeLockedModal');
+const goalText = document.getElementById('goalText');
+const goalProgress = document.getElementById('goalProgress');
+const timerPauseBtn = document.getElementById('timerPauseBtn');
+
+function renderDaySelector() {
+    const sel = daySelect;
+    sel.innerHTML = '';
+    for (let d = 0; d < DAYS; d++) {
+        const opt = document.createElement('option');
+        opt.value = d;
+        const status = getDayStatus(d);
+        let label = `Day ${d+1}`;
+        if (status === 'completed') label += ' ✅';
+        else if (status === 'in-progress') label += ' 🔄';
+        else label += ' 🔴';
+        opt.textContent = label;
+        if (d === currentDay) opt.selected = true;
+        sel.appendChild(opt);
+    }
+}
+
+function renderStatusBadge() {
+    const status = getDayStatus(currentDay);
+    const dot = document.getElementById('statusDot');
+    const label = document.getElementById('statusLabel');
+    dot.className = 'dot';
+    if (status === 'completed') {
+        dot.classList.add('dot-green');
+        label.textContent = '✅ Done!';
+    } else if (status === 'in-progress') {
+        dot.classList.add('dot-orange');
+        label.textContent = '🔄 In progress';
+    } else {
+        dot.classList.add('dot-red');
+        label.textContent = '🔴 Not started';
+    }
+}
+
+function renderStats() {
+    const dayProg = state.dayProgress[currentDay];
+    progressText.textContent = `Day ${currentDay+1} · ${currentQ+1}/${TOTAL_PER_DAY}`;
+    starCount.textContent = dayProg.stars || 0;
+    errorCount.textContent = dayProg.totalErrors || 0;
+    reviewCount.textContent = dayProg.reviewCount || 0;
+    overallProgress.textContent = getOverallProgress() + '%';
+    const goal = getDayGoalProgress(currentDay);
+    goalProgress.textContent = `${goal} / ${DAILY_GOAL}`;
+    goalText.textContent = `${DAILY_GOAL} ⭐`;
+    goalProgress.style.background = goal >= DAILY_GOAL ? '#a8e6cf' : 'white';
+    goalProgress.style.borderColor = goal >= DAILY_GOAL ? '#2d9c6e' : '#eaceb8';
+}
+
+function renderQuestion() {
+    const q = getQuestion(currentDay, currentQ);
+    const qState = getQuestionState(currentDay, currentQ);
+    const dayProg = state.dayProgress[currentDay];
+
+    qNumEl.textContent = `Q${currentQ+1}`;
+    let tagText = '';
+    let tagClass = 'q-tag';
+    if (q.type === 'mc') { tagText = '🎯 Multiple Choice'; }
+    else if (q.type === 'fill') { tagText = '✏️ Fill in'; }
+    else if (q.type === 'word') { tagText = '📖 Word Problem'; tagClass += ' word-tag'; }
+    else if (q.type === 'logic') { tagText = '🧩 Logic'; tagClass += ' logic-tag'; }
+    if (qState.markedReview) { tagText += ' 🔍 Review'; tagClass += ' review-tag'; }
+    qTagEl.textContent = tagText;
+    qTagEl.className = tagClass;
+
+    qTextEl.textContent = q.display;
+    qTextEl.className = 'q-text';
+    if (q.type === 'word') qTextEl.classList.add('word-text');
+
+    const isMC = (q.type === 'mc' || q.type === 'logic');
+    if (isMC) {
+        choicesContainer.style.display = 'flex';
+        fillArea.style.display = 'none';
+        renderChoices(q, qState);
+    } else {
+        choicesContainer.style.display = 'none';
+        fillArea.style.display = 'flex';
+        fillInput.value = '';
+        fillInput.disabled = qState.answered && qState.correct;
+        if (!qState.answered || !qState.correct) {
+            setTimeout(() => fillInput.focus(), 150);
+        }
+    }
+
+    const allDone = dayProg.questionStates.every((s) => s.answered && s.correct);
+
+    if (qState.answered && qState.correct) {
+        const errMsg = qState.errors === 0 ? 'Perfect! No mistakes!' : `You got it after ${qState.errors} mistake${qState.errors>1?'s':''}! 💪`;
+        feedbackEl.innerHTML = `
+            <span>🎉😍⭐ Correct!</span>
+            <span class="sub-feedback">${errMsg}</span>
+            ${qState.errors > 0 ? `<span class="error-count">❌ ${qState.errors}</span>` : ''}
+        `;
+        if (allDone && currentQ === TOTAL_PER_DAY - 1) {
+            const stars = dayProg.stars;
+            const errors = dayProg.totalErrors;
+            const nextDay = currentDay + 1;
+            const acc = getDayAccuracy(currentDay);
+            const elapsed = state.timerStarted ? (state.timerPaused ? state.timerPauseOffset : Date.now() - state.timerStartTime) : 0;
+            const mins = String(Math.floor(elapsed / 60000)).padStart(2, '0');
+            const secs = String(Math.floor((elapsed % 60000) / 1000)).padStart(2, '0');
+            const goalMet = stars >= DAILY_GOAL;
+            playSound('complete');
+            feedbackEl.innerHTML = `
+                <div class="complete-popup">
+                    <h2>🎉🌟 DAY ${currentDay+1} COMPLETE! 🌟🎉</h2>
+                    <div class="big-stats">
+                        <span>⭐ ${stars} stars</span>
+                        <span>🎯 ${goalMet ? '✅ Goal met!' : `${stars}/${DAILY_GOAL}`}</span>
+                        <span>✅ ${acc.percent}% accuracy</span>
+                        <span>⏱️ ${mins}:${secs}</span>
+                    </div>
+                    <p style="font-size:18px;">${errors === 0 ? '💯 PERFECT! AMAZING!' : 'Great job! Keep practicing!'}</p>
+                    <button class="btn-primary" id="gotoNextDayBtn" style="margin-top:12px; width:100%; justify-content:center;">
+                        ${nextDay >= DAYS ? '🏆 All Done!' : `➡️ Go to Day ${nextDay}`}
+                    </button>
+                </div>
+            `;
+            nextBtn.style.display = 'none';
+            const gotoBtn = document.getElementById('gotoNextDayBtn');
+            if (gotoBtn) {
+                gotoBtn.addEventListener('click', () => {
+                    if (currentDay + 1 < DAYS) {
+                        currentDay++;
+                        currentQ = 0;
+                        state.currentDay = currentDay;
+                        state.currentQuestion = currentQ;
+                        saveState();
+                        renderAll();
+                        if (isAllDaysComplete()) {
+                            setTimeout(() => { triggerCelebration(); }, 300);
+                        }
+                    } else {
+                        stopTimer();
+                        triggerCelebration();
+                        feedbackEl.innerHTML = `<h2>🏆 YOU ARE A MATH CHAMPION! 🏆</h2><p style="font-size:22px;">All 10 days complete! ⭐${getTotalStars()} stars!</p>`;
+                        nextBtn.style.display = 'none';
+                        renderStats();
+                    }
+                });
+            }
+            return;
+        } else {
+            nextBtn.style.display = 'inline-block';
+            nextBtn.textContent = '➡️ Next';
+        }
+    } else if (qState.answered && !qState.correct) {
+        feedbackEl.innerHTML = `<span>😅 Try again!</span><span class="sub-feedback">Keep going, you can do it!</span>`;
+        nextBtn.style.display = 'none';
+    } else {
+        feedbackEl.innerHTML = `<span>✨ Ready?</span><span class="sub-feedback">${isMC ? 'Choose an answer!' : 'Type your answer!'}</span>`;
+        nextBtn.style.display = 'none';
+    }
+
+    markReviewBtn.textContent = qState.markedReview ? '🔍 Reviewed' : '🤔 Mark for review';
+    markReviewBtn.style.opacity = qState.answered && qState.correct ? '0.5' : '1';
+    markReviewBtn.disabled = qState.answered && qState.correct;
+
+    renderStats();
+    renderStatusBadge();
+    renderDaySelector();
+}
+
+function renderChoices(q, qState) {
+    const container = choicesContainer;
+    container.innerHTML = '';
+    const correct = q.answer;
+    let opts = q.options || [correct, ...generateDistractors(correct, 2)];
+    if (opts.length < 3) {
+        opts = [correct, correct+1, correct+2];
+    }
+    shuffleArray(opts);
+
+    opts.forEach((val) => {
+        const btn = document.createElement('button');
+        btn.className = 'choice-btn';
+        btn.textContent = val;
+        btn.dataset.value = val;
+        if (qState.answered && qState.correct) {
+            btn.disabled = true;
+            if (val === correct) btn.classList.add('correct-glow');
+        }
+        btn.addEventListener('click', () => handleChoiceClick(q, qState, val, btn));
+        container.appendChild(btn);
+    });
+}
+
+// ============================================================
+//   INTERACTIONS
+// ============================================================
+function handleChoiceClick(q, qState, selectedVal, btn) {
+    if (qState.answered && qState.correct) return;
+
+    if (!state.timerStarted) {
+        startTimer();
+        initAudio();
+    }
+
+    const correct = q.answer;
+    const isCorrect = (selectedVal === correct);
+    const allBtns = document.querySelectorAll('.choice-btn');
+    allBtns.forEach(b => b.disabled = true);
+
+    if (isCorrect) {
+        playSound('correct');
+        btn.classList.add('correct-glow');
+        qState.answered = true;
+        qState.correct = true;
+        qState.userAnswer = selectedVal;
+        if (!qState.markedReview) {
+            state.dayProgress[currentDay].stars += 1;
+        }
+        saveState();
+        renderQuestion();
+    } else {
+        playSound('wrong');
+        btn.classList.add('wrong-glow');
+        qState.errors += 1;
+        state.dayProgress[currentDay].totalErrors += 1;
+        saveState();
+        feedbackEl.innerHTML = `
+            <span>😅 Not quite!</span>
+            <span class="sub-feedback">Try again! 💪</span>
+            <span class="error-count">❌ ${qState.errors}</span>
+        `;
+        setTimeout(() => {
+            allBtns.forEach(b => {
+                b.disabled = false;
+                b.classList.remove('wrong-glow');
+            });
+            feedbackEl.innerHTML = `<span>🤔 Try again!</span><span class="sub-feedback">Choose the correct answer.</span>`;
+        }, 650);
+    }
+}
+
+function handleFillCheck() {
+    const q = getQuestion(currentDay, currentQ);
+    const qState = getQuestionState(currentDay, currentQ);
+    if (qState.answered && qState.correct) return;
+
+    if (!state.timerStarted) {
+        startTimer();
+        initAudio();
+    }
+
+    const val = fillInput.value.trim();
+    if (val === '') {
+        feedbackEl.innerHTML = `<span>📝 Please type a number!</span>`;
+        return;
+    }
+    const num = Number(val);
+    if (isNaN(num)) {
+        feedbackEl.innerHTML = `<span>🔢 Please enter a valid number!</span>`;
+        return;
+    }
+
+    const correct = q.answer;
+    const isCorrect = (num === correct);
+
+    if (isCorrect) {
+        playSound('correct');
+        qState.answered = true;
+        qState.correct = true;
+        qState.userAnswer = num;
+        if (!qState.markedReview) {
+            state.dayProgress[currentDay].stars += 1;
+        }
+        saveState();
+        renderQuestion();
+    } else {
+        playSound('wrong');
+        qState.errors += 1;
+        state.dayProgress[currentDay].totalErrors += 1;
+        saveState();
+        feedbackEl.innerHTML = `
+            <span>😅 Not quite!</span>
+            <span class="sub-feedback">Try again! 💪</span>
+            <span class="error-count">❌ ${qState.errors}</span>
+        `;
+        fillInput.value = '';
+        setTimeout(() => {
+            fillInput.focus();
+            feedbackEl.innerHTML = `<span>🤔 Try again!</span><span class="sub-feedback">Type the correct number.</span>`;
+        }, 650);
+    }
+}
+
+function toggleReview() {
+    const q = getQuestion(currentDay, currentQ);
+    const qState = getQuestionState(currentDay, currentQ);
+    if (qState.answered && qState.correct) return;
+    qState.markedReview = !qState.markedReview;
+    let count = 0;
+    for (let q = 0; q < TOTAL_PER_DAY; q++) {
+        if (state.dayProgress[currentDay].questionStates[q].markedReview) count++;
+    }
+    state.dayProgress[currentDay].reviewCount = count;
+    saveState();
+    renderQuestion();
+}
+
+function goToNextQuestion() {
+    const qState = getQuestionState(currentDay, currentQ);
+    if (!qState.answered || !qState.correct) return;
+
+    if (currentQ < TOTAL_PER_DAY - 1) {
+        currentQ++;
+        state.currentQuestion = currentQ;
+        saveState();
+        renderQuestion();
+    } else {
+        renderQuestion();
+    }
+}
+
+// ============================================================
+//   NAVIGATION
+// ============================================================
+function goToDay(dayIdx) {
+    if (dayIdx === currentDay) { renderAll(); return; }
+    if (isDayLocked(dayIdx)) {
+        lockedPrevDay.textContent = `Day ${dayIdx+1}`;
+        lockedModal.classList.add('active');
+        return;
+    }
+    currentDay = dayIdx;
+    currentQ = 0;
+    state.currentDay = currentDay;
+    state.currentQuestion = currentQ;
+    saveState();
+    renderAll();
+}
+
+function renderAll() {
+    renderDaySelector();
+    renderStatusBadge();
+    renderStats();
+    renderQuestion();
+    daySelect.value = currentDay;
+    updateTimerDisplay();
+}
+
+// ============================================================
+//   REVIEW LIST
+// ============================================================
+function showReviewList() {
+    let items = [];
+    for (let d = 0; d < DAYS; d++) {
+        for (let q = 0; q < TOTAL_PER_DAY; q++) {
+            const qs = state.dayProgress[d].questionStates[q];
+            if (qs.markedReview) {
+                const qData = allDays[d][q];
+                items.push({
+                    day: d+1,
+                    qNum: q+1,
+                    display: qData.display.length > 40 ? qData.display.slice(0,37)+'...' : qData.display,
+                    answered: qs.answered,
+                    correct: qs.correct,
+                });
+            }
+        }
+    }
+    if (items.length === 0) {
+        reviewListContent.innerHTML = `<p style="color:#6f5542; font-size:20px;">🎉 No items marked for review! Great job!</p>`;
+    } else {
+        let html = '';
+        items.forEach(item => {
+            const status = item.answered && item.correct ? '✅ Done' : '⏳ Pending';
+            html += `
+                <div class="review-item">
+                    <span>Day ${item.day} · Q${item.qNum}: ${item.display}</span>
+                    <span class="badge">${status}</span>
+                </div>
+            `;
+        });
+        reviewListContent.innerHTML = html;
+    }
+    reviewModal.classList.add('active');
+}
+
+// ============================================================
+//   PARENT PANEL
+// ============================================================
+function showParentPanel() {
+    let html = '<div class="stat-grid">';
+    html += `<div class="stat-row"><span class="label">Total Stars</span><span class="value">⭐ ${getTotalStars()}</span></div>`;
+    html += `<div class="stat-row"><span class="label">Total Errors</span><span class="value">❌ ${getTotalErrors()}</span></div>`;
+    html += `<div class="stat-row"><span class="label">Overall Progress</span><span class="value">📊 ${getOverallProgress()}%</span></div>`;
+    html += `<div class="stat-row"><span class="label">Days Completed</span><span class="value">${state.dayProgress.filter(p => p.completed).length} / ${DAYS}</span></div>`;
+    html += `</div><hr style="border-color:#ecdacb; margin:10px 0;">`;
+    html += `<div style="font-weight:600; margin-bottom:6px;">📅 Daily Breakdown:</div>`;
+    html += `<div class="stat-grid">`;
+    for (let d = 0; d < DAYS; d++) {
+        const prog = state.dayProgress[d];
+        const status = getDayStatus(d);
+        const acc = getDayAccuracy(d);
+        const statusIcon = status === 'completed' ? '✅' : status === 'in-progress' ? '🔄' : '🔴';
+        html += `
+            <div class="stat-row">
+                <span class="label">Day ${d+1} ${statusIcon}</span>
+                <span class="value">⭐${prog.stars} ❌${prog.totalErrors} ${acc.percent}%</span>
+            </div>
+        `;
+    }
+    html += `</div>`;
+    parentPanelContent.innerHTML = html;
+    parentModal.classList.add('active');
+}
+
+// ============================================================
+//   CLEAR CACHE
+// ============================================================
+function clearCache() {
+    if (confirm('Clear all progress? This cannot be undone!')) {
+        localStorage.removeItem('mathChallengeState');
+        location.reload();
+    }
+}
+
+// ============================================================
+//   SECURITY / LOCKDOWN
+// ============================================================
+document.addEventListener('contextmenu', (e) => e.preventDefault());
+document.addEventListener('touchmove', (e) => {
+    if (e.target.closest('.modal-box') || e.target.closest('.modal-overlay')) return;
+    e.preventDefault();
+}, { passive: false });
+document.addEventListener('dblclick', (e) => e.preventDefault());
+
+window.addEventListener('beforeunload', (e) => {
+    e.preventDefault();
+    e.returnValue = 'Are you sure you want to leave? Your progress will be saved!';
+});
+
+document.addEventListener('keydown', (e) => {
+    if (e.metaKey || e.ctrlKey) {
+        if (['w', 'W', 'r', 'R', 'q', 'Q'].includes(e.key)) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+    }
+    if (e.key === 'F5' || (e.metaKey && e.key === 'r') || (e.ctrlKey && e.key === 'r')) {
+        e.preventDefault();
+    }
+});
+
+// ============================================================
+//   TOUCH SWIPE
+// ============================================================
+let touchStartX = 0;
+let touchStartY = 0;
+const appContainer = document.querySelector('.app-container');
+
+appContainer.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+    touchStartY = e.changedTouches[0].screenY;
+}, { passive: true });
+
+appContainer.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].screenX - touchStartX;
+    const dy = e.changedTouches[0].screenY - touchStartY;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.2) {
+        if (dx < 0 && currentDay < DAYS - 1) {
+            goToDay(currentDay + 1);
+        } else if (dx > 0 && currentDay > 0) {
+            goToDay(currentDay - 1);
+        }
+    }
+}, { passive: true });
+
+// ============================================================
+//   EVENT BINDING
+// ============================================================
+document.addEventListener('DOMContentLoaded', () => {
+    if (state.timerStarted && !state.timerPaused) {
+        startTimer();
+    } else if (state.timerStarted && state.timerPaused) {
+        updateTimerDisplay();
+        document.getElementById('timerPauseBtn').textContent = '▶️';
+    }
+
+    renderAll();
+
+    if (isAllDaysComplete()) {
+        setTimeout(() => {
+            triggerCelebration();
+        }, 500);
+    }
+
+    daySelect.addEventListener('change', (e) => {
+        goToDay(parseInt(e.target.value));
+    });
+
+    prevDayBtn.addEventListener('click', () => {
+        if (currentDay > 0) goToDay(currentDay - 1);
+        else feedbackEl.innerHTML = `<span>🎯 You're on Day 1!</span>`;
+    });
+    nextDayBtn.addEventListener('click', () => {
+        if (currentDay < DAYS - 1) goToDay(currentDay + 1);
+        else feedbackEl.innerHTML = `<span>🏆 Last day! Finish strong!</span>`;
+    });
+
+    checkFillBtn.addEventListener('click', handleFillCheck);
+    fillInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') { e.preventDefault(); handleFillCheck(); }
+    });
+
+    markReviewBtn.addEventListener('click', toggleReview);
+    nextBtn.addEventListener('click', goToNextQuestion);
+
+    showReviewListBtn.addEventListener('click', showReviewList);
+    closeReviewModal.addEventListener('click', () => reviewModal.classList.remove('active'));
+    reviewModal.addEventListener('click', (e) => {
+        if (e.target === reviewModal) reviewModal.classList.remove('active');
+    });
+
+    showParentPanelBtn.addEventListener('click', showParentPanel);
+    closeParentModal.addEventListener('click', () => parentModal.classList.remove('active'));
+    parentModal.addEventListener('click', (e) => {
+        if (e.target === parentModal) parentModal.classList.remove('active');
+    });
+
+    closeLockedModal.addEventListener('click', () => lockedModal.classList.remove('active'));
+    lockedModal.addEventListener('click', (e) => {
+        if (e.target === lockedModal) lockedModal.classList.remove('active');
+    });
+
+    timerPauseBtn.addEventListener('click', toggleTimerPause);
+    document.getElementById('clearCacheBtn').addEventListener('click', clearCache);
+
+    document.addEventListener('keydown', (e) => {
+        if (e.target.tagName === 'INPUT') return;
+        if (e.key === 'ArrowLeft' && currentDay > 0) goToDay(currentDay - 1);
+        if (e.key === 'ArrowRight' && currentDay < DAYS - 1) goToDay(currentDay + 1);
+        if (e.key === ' ' || e.key === 'Space') {
+            e.preventDefault();
+            if (nextBtn.style.display !== 'none') nextBtn.click();
+        }
+    });
+});
+
+console.log('🌟 Math Challenge loaded! GitHub Pages ready!');
+</script>
+</body>
+</html>
